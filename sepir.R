@@ -6,14 +6,14 @@ sample2 <- function(x, size) {
   }
 }
 
-sepir_gillespie <- function(size=1000,
-                            beta_p=0.5,
-                            beta_s=0.5,
-                            sigma=1/3,
-                            gamma_p=1/3,
-                            gamma_s=1/3,
-                            I0=10,
-                            seed = NULL){
+sepir <- function(size=1000,
+                  beta_p=0.5,
+                  beta_s=0.5,
+                  sigma=1/3,
+                  gamma_p=1/3,
+                  gamma_s=1/3,
+                  I0=10,
+                  seed = NULL){
   
   if (!is.null(seed)) set.seed(seed)
   
@@ -27,8 +27,6 @@ sepir_gillespie <- function(size=1000,
   t_infected <- t_infectious <- t_symptom <- t_recovered <- rep(NA, size)
   t_infected[1:I0] <- 0
   
-  t_gillespie <- NULL
-  
   infected_by <- rep(NA, size)
   
   stop <- FALSE
@@ -36,8 +34,6 @@ sepir_gillespie <- function(size=1000,
   t <- 0
   
   while (!stop) {
-    t_gillespie <- c(t_gillespie, t)
-    
     S <- sum(state=="S")
     E <- sum(state=="E")
     Ip <- sum(state=="Ip")
@@ -98,6 +94,7 @@ sepir_gillespie <- function(size=1000,
   data.frame(
     t_infected=t_infected,
     t_infectious=t_infectious,
+    t_symptom=t_symptom,
     t_recovered=t_recovered,
     infected_by=infected_by
   )
